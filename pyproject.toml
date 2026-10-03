@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "xsec"
+version = "0.1.0"
+description = "See whether a grown tifxyz surface really follows one papyrus sheet (Vesuvius Challenge)"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = ["numpy", "tifffile", "zarr<3", "opencv-python-headless", "s3fs"]
+[tool.setuptools]
+packages = ["xsec"]

@@ -2,6 +2,18 @@
 
 `xsec` draws a tifxyz surface on raw CT slices at several heights, so a person can check in seconds whether the surface stays on one sheet or jumps between layers. It ships with the synthetic case that shows why the usual numeric gate cannot catch a jump, and with the real PHerc0268 case where only the cross-section caught it.
 
+## Quick start (2 minutes)
+```bash
+pip install -e . && pytest                      # 3 synthetic tests
+bash scripts/reproduce.sh                        # the real PHerc0268 figure, straight from the public bucket
+python -m xsec.xsections <your_tifxyz_dir> s3://vesuvius-challenge-open-data/<scroll>/volumes/<volume>.zarr out/mine --level 1
+```
+The grown surface used in the figures is included (`results/PHerc0268_seed98_normalgrid_tifxyz`, 2 × 2 cm, 122 × 122 cells), so the picture is reproducible without our pipeline.
+
+![PHerc0268: the same seed grown without (left) and with (right) the organizers' normal grids, drawn on the raw CT slice at z = 4744](results/PHerc0268_grown_surface_old_vs_normalgrid_z4744.png)
+
+![The normal-grid surface at four heights; it holds a layer between cracks and jumps at cracks](results/PHerc0268_normalgrid_surface_4_heights.png)
+
 ## Why
 Auto-grown surfaces (`vc_grow_seg_from_seed`) are the input to every render and every ink model. If a surface crosses from one winding to the next, the render is a collage of different sheets and no ink map on it means anything. We lost a full day of compute to exactly that before looking at a cross-section.
 
@@ -21,7 +33,7 @@ Auto-grown surfaces (`vc_grow_seg_from_seed`) are the input to every render and 
 - Level-1 CT (17 µm/px) is used for speed; pass `--level 0 --scale 1` for full resolution.
 
 ## Install and test
-`pip install numpy tifffile zarr opencv-python-headless s3fs pytest` then `pytest` (3 tests, about 6 s, synthetic data only).
+`pip install -e .` (or `pip install -r requirements.txt`) then `pytest` (3 tests, about 6 s, synthetic data only). Companion tools: [ringstrip](https://github.com/abundantjoe/ringstrip) (unroll patches into one strip) and [orgsec-ink](https://github.com/abundantjoe/orgsec-ink) (public ink models on organizer segments).
 
 ## Data and citation
 Scans: PHerc0268 from the Vesuvius Challenge open-data bucket (https://scrollprize.org/data, Data Browser https://scrollprize.org/data_browser). Cite:
