@@ -1,0 +1,6 @@
+numpy
+tifffile
+zarr
+opencv-python-headless
+s3fs
+pytest
